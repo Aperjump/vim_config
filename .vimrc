@@ -47,3 +47,8 @@ colorscheme molokai
 
 " enable vim org mode
 filetype plugin indent on
+
+" maps
+:nmap <Space> <PageDown>
+:nmap <Down> :next<CR>
+:nmap <UP> :prev<CR>
