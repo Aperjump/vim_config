@@ -6,12 +6,17 @@ set nu
 set ruler
 set showcmd
 
+" ctag 
+set tags=./tags;,.tags
+
 " can copy from vim to clipboard
 set clipboard=unnamed,unnamedplus
 
 " show currentline
 set cursorline
 
+autocmd vimenter * NERDTree
+let g:clang_library_path='/usr/lib/llvm-6.0/lib/libclang.so'
 " syntax highlight
 syntax enable
 syntax on
@@ -52,3 +57,91 @@ filetype plugin indent on
 :nmap <Space> <PageDown>
 :nmap <Down> :next<CR>
 :nmap <UP> :prev<CR>
+
+" change leader 
+let mapleader=','
+let g:mapleader=','
+" pathogen.vim
+" Any thing you wish to install can be extracted to ~/.vim/bundle
+execute pathogen#infect()
+
+" plug-in managements
+call plug#begin('~/.vim/plugged')
+Plug 'ludovicchabant/vim-gutentags'
+Plug 'skywind3000/asyncrun.vim'
+Plug 'mhinz/vim-startify'
+Plug 'easymotion/vim-easymotion'
+Plug 'Valloric/YouCompleteMe'
+Plug 'Kien/ctrlp.vim'
+Plug 'scrooloose/nerdtree'
+Plug 'majutsushi/tagbar'
+Plug 'lfv89/vim-interestingwords'
+" end plug-in lists
+call plug#end()
+
+" vim-gutentags config
+let g:gutentags_project_root = ['.root', '.svn', '.git', '.hg', '.project']
+let g:gutentags_ctags_tagfile = '.tags'
+
+" put all tag file in ~/.cache/tags directory
+let s:vim_tags = expand('~/.cache/tags')
+let g:gutentags_cache_dir = s:vim_tags
+
+" ctag config
+let g:gutentags_ctags_extra_args = ['--fields=+niazS', '--extra=+1']
+let g:gutentags_ctags_extra_args += ['--c++-kinds=+px']
+let g:gutentags_ctags_extra_args += ['--c-kinds=+px']
+
+if !isdirectory(s:vim_tags)
+    silent! call mkdir(s:vim_tags, 'p')
+endif
+
+" asyncRunn config
+let g:asyncrun_open = 6
+let g:asyncrun_bell = 1
+nnoremap<F10> :call asyncrun#quickfix_toggle(6)<cr>
+
+" YCM config
+" python config
+let g:ycm_python_binary_path = '/usr/bin/python3'
+" C++ config
+let g:ycm_global_ycm_extra_conf = './.ycm_extra_conf.py'
+let g:ycm_key_invoke_completion = '<C-Space>'
+nnoremap <leader>jd :YcmCompleter GoToDefinitionElseDeclaration<CR>
+nmap<C-a> :YcmCompleter FixIt<CR>
+
+
+" powerline setting
+set laststatus=2
+set t_Co=256
+python3 from powerline.vim import setup as powerline_setup
+python3 powerline_setup()
+python3 del powerline_setup
+
+" easymotion
+let g:EasyMotion_do_mapping = 0 " Disable default mappings
+
+" Jump to anywhere you want with minimal keystrokes, with just one key binding.
+" `s{char}{label}`
+nmap f <Plug>(easymotion-overwin-f)
+" or
+" `s{char}{char}{label}`
+" Need one more keystroke, but on average, it may be more comfortable.
+nmap f <Plug>(easymotion-overwin-f2)
+
+" Turn on case insensitive feature
+let g:EasyMotion_smartcase = 1
+
+" JK motions: Line motions
+map <Leader>j <Plug>(easymotion-j)
+map <Leader>k <Plug>(easymotion-k)
+
+" nerd tree
+nmap ,v :NERDTreeFind<cr>
+nmap ,g :NERDTreeToggle<cr>
+
+" tagbar config
+nmap <F8> :TagbarToggle<CR>
+
+" ctags
+set tags=./.tags;,.tags
