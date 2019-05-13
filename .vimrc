@@ -1,16 +1,21 @@
 set encoding=utf-8
-
 " line number
+" vmap y :w!pbcopy<CR><CR>
+" nmap yy: w!pbcopy<CR><CR>
+" nmap p: r!pbpaste<CR><CR>
 set nu
 " line number and column number
 set ruler
 set showcmd
 
 " ctag 
-set tags=./tags;,.tags
-
+" set tags=./tags;,.tags
+set tags=./tags;/;  
+map <C-\> :tab split<CR>:exec("tag ".expand("<cword>"))<CR>
+map <C-s> :vsp <CR>:exec("tag ".expand("<cword>"))<CR>
+set autochdir 
 " can copy from vim to clipboard
-set clipboard=unnamed,unnamedplus
+set clipboard=unnamed
 
 " show currentline
 set cursorline
@@ -63,7 +68,7 @@ let mapleader=','
 let g:mapleader=','
 " pathogen.vim
 " Any thing you wish to install can be extracted to ~/.vim/bundle
-execute pathogen#infect()
+" execute pathogen#infect()
 
 " plug-in managements
 call plug#begin('~/.vim/plugged')
@@ -75,7 +80,13 @@ Plug 'Valloric/YouCompleteMe'
 Plug 'Kien/ctrlp.vim'
 Plug 'scrooloose/nerdtree'
 Plug 'majutsushi/tagbar'
+Plug 'gilligan/vim-lldb'
 Plug 'lfv89/vim-interestingwords'
+Plug 'Lokaltog/vim-powerline'
+Plug 'vhdirk/vim-cmake'
+Plug 'rust-lang/rust.vim'
+Plug 'xolox/vim-misc'
+Plug 'xolox/vim-notes'
 " end plug-in lists
 call plug#end()
 
@@ -107,6 +118,8 @@ let g:ycm_python_binary_path = '/usr/bin/python3'
 " C++ config
 let g:ycm_global_ycm_extra_conf = './.ycm_extra_conf.py'
 let g:ycm_key_invoke_completion = '<C-Space>'
+let g:ycm_confirm_extra_conf = 0
+let g:ycm_rust_src_path= "~/.rustup/toolchains/stable-x86_64-apple-darwin/lib/rustlib/src/rust/src"
 nnoremap <leader>jd :YcmCompleter GoToDefinitionElseDeclaration<CR>
 nmap<C-a> :YcmCompleter FixIt<CR>
 
@@ -114,9 +127,9 @@ nmap<C-a> :YcmCompleter FixIt<CR>
 " powerline setting
 set laststatus=2
 set t_Co=256
-python3 from powerline.vim import setup as powerline_setup
-python3 powerline_setup()
-python3 del powerline_setup
+" python from powerline.vim import setup as powerline_setup
+" python powerline_setup()
+" python del powerline_setup
 
 " easymotion
 let g:EasyMotion_do_mapping = 0 " Disable default mappings
